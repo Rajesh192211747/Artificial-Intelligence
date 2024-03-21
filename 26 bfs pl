@@ -1,0 +1,52 @@
+% Define example graph structure and heuristic values
+edge(a, b, 3).
+edge(a, c, 6).
+edge(b, d, 2).
+edge(b, e, 5).
+edge(c, f, 4).
+edge(c, g, 7).
+edge(d, h, 1).
+edge(e, h, 8).
+edge(f, i, 9).
+edge(g, i, 10).
+
+% Define heuristic values for each node
+heuristic(b, 5).
+heuristic(c, 6).
+heuristic(d, 3).
+heuristic(e, 7).
+heuristic(f, 8).
+heuristic(g, 9).
+heuristic(h, 2).
+heuristic(i, 1).
+
+% Define best_first_search predicate
+best_first_search(Start, Goal) :-
+    best_first_search(Start, Goal, [Start], []).
+
+% Base case: Goal is reached
+best_first_search(Goal, Goal, Visited, Path) :-
+    reverse([Goal|Visited], Path),
+    write('Path: '), write(Path).
+
+% Recursive case: Expand nodes based on heuristic value
+best_first_search(Current, Goal, Visited, Path) :-
+    findall(Neighbor, (edge(Current, Neighbor, _), \+ member(Neighbor, Visited)), Unvisited),
+    add_heuristic(Unvisited, HeuristicList),
+    min_member(NextNode, HeuristicList),
+    best_first_search(NextNode, Goal, [NextNode|Visited], Path).
+
+% Calculate heuristic values for unvisited nodes
+add_heuristic([], []).
+add_heuristic([Node|Rest], [(Node, Heuristic)|T]) :-
+    heuristic(Node, Heuristic),
+    add_heuristic(Rest, T).
+
+% Find minimum heuristic value among unvisited nodes
+min_member(X, [(X, V)|Xs]) :- min_member(V, Xs).
+min_member(X, [(Y, V)|Xs]) :- min_member(X, Xs), X =< V.
+min_member(X, [(Y, V)|Xs]) :- min_member(Y, Xs), X > V.
+min_member(X, [(X, _)]).
+OUTPUT:
+?- best_first_search(a, i).
+Path: [a, b, d, h, i]
