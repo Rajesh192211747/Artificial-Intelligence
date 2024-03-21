@@ -1,0 +1,18 @@
+% Rule 1: If it's raining, then the grass is wet.
+rule(raining, grass_wet).
+
+% Rule 2: If the grass is wet, then the ground is damp.
+rule(grass_wet, ground_damp).
+
+% Forward chaining predicate
+forward_chaining(Fact) :-
+    rule(Fact, Conclusion),  % Check if there's a rule matching the given fact
+    \+ fact(Conclusion),     % Check if the conclusion is not already a fact
+    asserta(fact(Conclusion)), % Assert the conclusion as a new fact
+    forward_chaining(Conclusion). % Recursively apply forward chaining on the new fact
+
+forward_chaining(_). % Base case: If no more rules match, stop forward chaining
+
+OUTPUT:
+% Example query to start forward chaining with the fact "raining"
+% ?- forward_chaining(raining).
