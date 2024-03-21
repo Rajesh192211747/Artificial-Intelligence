@@ -1,0 +1,31 @@
+% Define foods and their nutritional information
+food(apple, 52, 0.2, 14, 10).    % (calories, fat, carbs, sugar, sodium)
+food(banana, 89, 0.3, 23, 12).
+food(chicken_breast, 165, 3.6, 0, 70).
+food(spinach, 23, 0.4, 3.6, 0).
+food(whole_grain_bread, 69, 0.9, 12, 123).
+food(salmon, 206, 10.9, 0, 50).
+% Add more foods and their nutritional information as needed
+
+% Define diet plans for different diseases
+diabetes_diet(Food) :-
+    food(Food, _, _, Carbs, _),
+    Carbs < 10.
+
+hypertension_diet(Food) :-
+    food(Food, _, Fat, _, Sodium),
+    Fat < 3,
+    Sodium < 100.
+
+OUTPUT:
+% ?- diabetes_diet(apple).
+% true.
+
+% ?- hypertension_diet(spinach).
+% true.
+
+% ?- diabetes_diet(salmon).
+% false.
+
+% ?- hypertension_diet(whole_grain_bread).
+% false.
