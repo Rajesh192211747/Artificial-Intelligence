@@ -1,0 +1,49 @@
+% Facts representing the family relationships
+parent(john, mary).
+parent(john, steve).
+parent(mary, lisa).
+parent(mary, peter).
+parent(peter, emily).
+parent(peter, david).
+
+% Rules to define different relationships
+father(Father, Child) :-
+    parent(Father, Child),
+    male(Father).
+
+mother(Mother, Child) :-
+    parent(Mother, Child),
+    female(Mother).
+
+% Define gender
+male(john).
+male(steve).
+male(peter).
+male(david).
+
+female(mary).
+female(lisa).
+female(emily).
+
+% Rules for more complex relationships
+sibling(X, Y) :-
+    parent(Z, X),
+    parent(Z, Y),
+    X \= Y.
+
+grandparent(GP, GC) :-
+    parent(GP, P),
+    parent(P, GC).
+
+OUTPUT:
+% ?- father(john, lisa).
+% false.
+
+% ?- father(john, steve).
+% true.
+
+% ?- mother(M, emily).
+% M = mary.
+
+% ?- sibling(lisa, peter).
+% true.
