@@ -1,0 +1,19 @@
+% Define rules and facts
+parent(john, mary).
+parent(john, steve).
+parent(mary, lisa).
+parent(mary, peter).
+parent(peter, emily).
+parent(peter, david).
+
+% Define a rule to determine if X is a grandparent of Z
+grandparent(X, Z) :-
+    parent(X, Y),   % X is a parent of Y
+    parent(Y, Z).   % Y is a parent of Z
+
+% Backward chaining predicate to determine if X is a grandparent of Z
+grandparent_of(X, Z) :-
+    grandparent(X, Z).
+
+OUTPUT:
+% ?- grandparent_of(john, emily).
