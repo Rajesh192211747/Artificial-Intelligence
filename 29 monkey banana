@@ -1,0 +1,27 @@
+% State representation: state(MonkeyPosition, ChairPosition, BananasPosition)
+
+% Initial state
+initial_state(state(at_door, at_door, on_ceiling)).
+
+% Final state
+final_state(state(_, under_bananas, _)).
+
+% Actions
+move(state(at_door, P, H), grasp, state(at_door, P, H)).
+move(state(on_chair, P, H), climb_down, state(at_door, P, H)).
+move(state(at_door, P, H), push, state(on_chair, P, H)).
+move(state(on_chair, P, H), push, state(on_floor, P, H)).
+move(state(on_floor, P, H), climb_up, state(on_chair, P, H)).
+
+% Plan to reach the final state
+plan(State, FinalState, Actions) :-
+    plan(State, FinalState, [], Actions).
+
+plan(State, State, Actions, Actions).
+plan(State, FinalState, CurrentActions, Actions) :-
+    move(State, Action, NextState),
+    not(member(NextState, CurrentActions)),
+    plan(NextState, FinalState, [NextState|CurrentActions], Actions).
+
+OUTPUT:
+% ?- initial_state(InitialState), final_state(FinalState), plan(InitialState, FinalState, Actions).
